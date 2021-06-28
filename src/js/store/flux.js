@@ -1,42 +1,60 @@
+import { peopleUrls, planetsUrls, vehiclesUrls } from "./urls";
+
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			people: [],
+			vehicles: [],
+			planets: [],
+			detail: [],
+			favorites: []
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+			setFavorites: (cat, id) => {
+				const store = getStore();
+				const favorite = store[cat].filter(fav => fav.result._id === id);
+				setStore({ ...store, favorites: [...store.favorites, { ...favorite[0], category: cat }] });
+			},
+			removeFavorites: id => {
+				const store = getStore();
+				const favoritesFilt = store.favorites.filter(fav => fav.result._id !== id);
+				setStore({ ...store, favorites: [...favoritesFilt] });
+			},
+			setDetails: (cat, id) => {
+				const store = getStore();
+				const details = store[cat].filter(fav => fav.result._id === id);
+				setStore({ ...store, detail: [...details] });
 			},
 			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
 				const store = getStore();
+				// fetch people
+				peopleUrls.map(url =>
+					fetch(url)
+						.then(resp => resp.json())
+						.then(json => {
+							const people = json;
+							setStore({ ...store, people: [...store.people, people] });
+						})
+				);
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
-
-				//reset the global store
-				setStore({ demo: demo });
+				// fetch vehicles
+				vehiclesUrls.map(url =>
+					fetch(url)
+						.then(resp => resp.json())
+						.then(json => {
+							const vehicles = json;
+							setStore({ ...store, vehicles: [...store.vehicles, vehicles] });
+						})
+				);
+				// fetch planets
+				planetsUrls.map(url =>
+					fetch(url)
+						.then(resp => resp.json())
+						.then(json => {
+							const planets = json;
+							setStore({ ...store, planets: [...store.planets, planets] });
+						})
+				);
 			}
 		}
 	};

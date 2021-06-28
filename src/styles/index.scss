@@ -1,3 +1,37 @@
-/* 
-    General Styles
-*/
+body {
+  p {
+    font-size: 18px;
+  }
+  hr {
+      border-color: red;
+  }
+
+}
+.favoritesMenu {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+
+    p {
+      font-size: 16px;
+    }
+    img {
+        height: 20px;
+        cursor: pointer;
+    }
+}
+.testimonial-group > .row {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    margin-bottom: 70px;
+  }
+  .testimonial-group > .row > .col-4 {
+    display: inline-block;
+  }
+  .testimonial-group h1 {
+      color: red;
+  }
+  .details {
+      color: red;
+  }

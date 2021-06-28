@@ -1,17 +1,43 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
+import logo from "../../img/starwars.jpg";
+import trash from "../../img/trash.jpg";
+import { Container, Navbar, Dropdown, Badge } from "react-bootstrap";
 
-export const Navbar = () => {
+import { Context } from "../store/appContext";
+
+export const Nav = () => {
+	const { store, actions } = useContext(Context);
+
 	return (
-		<nav className="navbar navbar-light bg-light mb-3">
-			<Link to="/">
-				<span className="navbar-brand mb-0 h1">React Boilerplate</span>
-			</Link>
-			<div className="ml-auto">
-				<Link to="/demo">
-					<button className="btn btn-primary">Check the Context in action</button>
+		<Container>
+			<Navbar className="bg-light justify-content-between">
+				<Link to={"/"}>
+					<img src={logo} alt="star wars" />
 				</Link>
-			</div>
-		</nav>
+				<Dropdown>
+					<Dropdown.Toggle variant="primary" id="dropdown-basic">
+						{"Favorites "} <Badge variant="light">{store.favorites.length}</Badge>
+					</Dropdown.Toggle>
+
+					<Dropdown.Menu>
+						{store.favorites.length > 0 ? (
+							store.favorites.map(data => (
+								<div className="favoritesMenu" key={data.result._id}>
+									<Link to={`/${data.category}/${data.result._id}`}>
+										<p>{data.result.properties.name}</p>
+									</Link>
+									<img src={trash} alt="X" onClick={() => actions.removeFavorites(data.result._id)} />
+								</div>
+							))
+						) : (
+							<div className="favoritesMenu">
+								<p>{"(empty)"}</p>
+							</div>
+						)}
+					</Dropdown.Menu>
+				</Dropdown>
+			</Navbar>
+		</Container>
 	);
 };

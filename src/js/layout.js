@@ -4,10 +4,12 @@ import ScrollToTop from "./component/scrollToTop";
 
 import { Home } from "./views/home";
 import { Demo } from "./views/demo";
-import { Single } from "./views/single";
+import { PeopleDetails } from "./views/peopleDetails";
+import { VehiclesDetails } from "./views/vehiclesDetails";
+import { PlanetDetails } from "./views/planetDetails";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
+import { Nav } from "./component/navbar";
 import { Footer } from "./component/footer";
 
 //create your first component
@@ -20,22 +22,28 @@ const Layout = () => {
 		<div className="d-flex flex-column">
 			<BrowserRouter basename={basename}>
 				<ScrollToTop>
-					<Navbar />
+					<Nav />
 					<Switch>
 						<Route exact path="/">
 							<Home />
 						</Route>
-						<Route exact path="/demo">
+						<Route path="/demo">
 							<Demo />
 						</Route>
-						<Route exact path="/single/:theid">
-							<Single />
+						<Route path="/people/:id">
+							<PeopleDetails />
+						</Route>
+						<Route path="/vehicles/:id">
+							<VehiclesDetails />
+						</Route>
+						<Route path="/planets/:id">
+							<PlanetDetails />
 						</Route>
 						<Route>
 							<h1>Not found!</h1>
 						</Route>
 					</Switch>
-					<Footer />
+					{/* <Footer /> */}
 				</ScrollToTop>
 			</BrowserRouter>
 		</div>
