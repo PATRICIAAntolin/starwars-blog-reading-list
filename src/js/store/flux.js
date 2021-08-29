@@ -12,8 +12,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 		actions: {
 			setFavorites: (cat, id) => {
 				const store = getStore();
+				const check = store.favorites.find(fav => fav.result._id === id);
 				const favorite = store[cat].filter(fav => fav.result._id === id);
-				setStore({ ...store, favorites: [...store.favorites, { ...favorite[0], category: cat }] });
+				setStore({
+					...store,
+					favorites: !check ? [...store.favorites, { ...favorite[0], category: cat }] : [...store.favorites]
+				});
 			},
 			removeFavorites: id => {
 				const store = getStore();
